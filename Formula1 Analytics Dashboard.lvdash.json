@@ -139,6 +139,43 @@
           }
         ]
       }
+    },
+    {
+      "name": "teammate_h2h",
+      "displayName": "Teammate H2H Summary",
+      "queryLines": [
+        "SELECT\n",
+        "  *\n",
+        "FROM\n",
+        "  formula1.gold.v_teammate_h2h"
+      ],
+      "columns": [
+        {
+          "displayName": "points_delta",
+          "description": "Points advantage of driver1 over driver2. Positive = driver1 dominated.",
+          "expression": "`driver1_points` - `driver2_points`"
+        },
+        {
+          "displayName": "races_delta",
+          "description": "Race-by-race advantage of driver1. Positive = driver1 beat teammate more often.",
+          "expression": "`driver1_races_ahead` - `driver2_races_ahead`"
+        },
+        {
+          "displayName": "finish_pos_delta",
+          "description": "Positive = Driver 1 has better avg finishing position (lower position = better in F1). Negative = Driver 2 finishes better.",
+          "expression": "`driver2_avg_finish` - `driver1_avg_finish`"
+        }
+      ]
+    },
+    {
+      "name": "teammate_h2h_long",
+      "displayName": "Teammate H2H Long",
+      "queryLines": [
+        "SELECT\n",
+        "  *\n",
+        "FROM\n",
+        "  formula1.gold.v_teammate_h2h_long"
+      ]
     }
   ],
   "pages": [
@@ -1695,6 +1732,458 @@
             "x": 0,
             "y": 15,
             "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "teammate_h2h",
+      "displayName": "Teammate Head-to-Head",
+      "layout": [
+        {
+          "widget": {
+            "name": "header",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Teammate Head-to-Head  \n",
+                "Who beat their teammate? Filter by season to explore intra-team battles across every era."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "season_filter",
+            "queries": [
+              {
+                "name": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7b51e9a81bd97d654fbb3cb_season",
+                "query": {
+                  "datasetName": "teammate_h2h",
+                  "fields": [
+                    {
+                      "name": "season",
+                      "expression": "`season`"
+                    },
+                    {
+                      "name": "season_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7db1287b1f7e456acaff517_season",
+                "query": {
+                  "datasetName": "teammate_h2h_long",
+                  "fields": [
+                    {
+                      "name": "season",
+                      "expression": "`season`"
+                    },
+                    {
+                      "name": "season_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Season"
+              },
+              "scale": {
+                "type": "categorical",
+                "sort": {
+                  "by": "natural-order-reversed"
+                }
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "INTEGER",
+                    "values": [
+                      {
+                        "value": "2025"
+                      }
+                    ]
+                  }
+                }
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "season",
+                    "queryName": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7b51e9a81bd97d654fbb3cb_season"
+                  },
+                  {
+                    "fieldName": "season",
+                    "queryName": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7db1287b1f7e456acaff517_season"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "team_filter",
+            "queries": [
+              {
+                "name": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7b51e9a81bd97d654fbb3cb_team",
+                "query": {
+                  "datasetName": "teammate_h2h",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7db1287b1f7e456acaff517_team",
+                "query": {
+                  "datasetName": "teammate_h2h_long",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Team"
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "team",
+                    "queryName": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7b51e9a81bd97d654fbb3cb_team"
+                  },
+                  {
+                    "fieldName": "team",
+                    "queryName": "dashboards/01f18a0d63bf19b7aa0f837790ecc8b4/datasets/01f18ac8f7db1287b1f7e456acaff517_team"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "battle_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "teammate_h2h",
+                  "fields": [
+                    {
+                      "name": "season",
+                      "expression": "`season`"
+                    },
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "driver1",
+                      "expression": "`driver1`"
+                    },
+                    {
+                      "name": "driver2",
+                      "expression": "`driver2`"
+                    },
+                    {
+                      "name": "driver1_points",
+                      "expression": "`driver1_points`"
+                    },
+                    {
+                      "name": "driver2_points",
+                      "expression": "`driver2_points`"
+                    },
+                    {
+                      "name": "points_delta",
+                      "expression": "`points_delta`"
+                    },
+                    {
+                      "name": "driver1_races_ahead",
+                      "expression": "`driver1_races_ahead`"
+                    },
+                    {
+                      "name": "driver2_races_ahead",
+                      "expression": "`driver2_races_ahead`"
+                    },
+                    {
+                      "name": "points_winner",
+                      "expression": "`points_winner`"
+                    },
+                    {
+                      "name": "h2h_winner",
+                      "expression": "`h2h_winner`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Battle Summary"
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "season",
+                    "displayName": "Season"
+                  },
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team"
+                  },
+                  {
+                    "fieldName": "driver1",
+                    "displayName": "Driver 1"
+                  },
+                  {
+                    "fieldName": "driver2",
+                    "displayName": "Driver 2"
+                  },
+                  {
+                    "fieldName": "driver1_points",
+                    "displayName": "D1 Points"
+                  },
+                  {
+                    "fieldName": "driver2_points",
+                    "displayName": "D2 Points"
+                  },
+                  {
+                    "fieldName": "points_delta",
+                    "displayName": "Points Gap"
+                  },
+                  {
+                    "fieldName": "driver1_races_ahead",
+                    "displayName": "D1 Races Ahead"
+                  },
+                  {
+                    "fieldName": "driver2_races_ahead",
+                    "displayName": "D2 Races Ahead"
+                  },
+                  {
+                    "fieldName": "points_winner",
+                    "displayName": "Points Winner"
+                  },
+                  {
+                    "fieldName": "h2h_winner",
+                    "displayName": "H2H Winner"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 12,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "pct_points_share",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "teammate_h2h",
+                  "fields": [
+                    {
+                      "name": "points_delta",
+                      "expression": "`points_delta`"
+                    },
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Points Gap (D1 vs D2)",
+                "description": "Positive = Driver 1 outscored Driver 2. Negative = Driver 2 outscored Driver 1."
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "points_delta",
+                  "displayName": "Points Gap (D1 − D2)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "team",
+                  "displayName": "Team",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "x-reversed"
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "points_delta",
+                  "displayName": "Points Gap",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "scheme",
+                      "scheme": "redblue"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 7,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "avg_finish_scatter",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "teammate_h2h",
+                  "fields": [
+                    {
+                      "name": "finish_pos_delta",
+                      "expression": "`finish_pos_delta`"
+                    },
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Finishing Position Advantage (D1 vs D2)",
+                "description": "Positive = Driver 1 finishes better on average. Negative = Driver 2 finishes better. Lower position number = better in F1."
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "finish_pos_delta",
+                  "displayName": "Avg Finish Gap (D1 − D2)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "team",
+                  "displayName": "Team",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "x-reversed"
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "finish_pos_delta",
+                  "displayName": "Finish Advantage",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "scheme",
+                      "scheme": "redblue"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 7,
+            "y": 8,
+            "width": 5,
             "height": 6
           }
         }
