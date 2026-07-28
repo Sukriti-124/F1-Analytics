@@ -97,6 +97,48 @@
       ],
       "catalog": "formula1",
       "schema": "gold"
+    },
+    {
+      "name": "96a1711e",
+      "displayName": "v_driver_predictions_2026",
+      "config": {
+        "version": "1.1",
+        "source": "formula1.gold.v_driver_predictions_2026",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "987a270f",
+      "displayName": "v_constructor_predictions_2026",
+      "config": {
+        "version": "1.1",
+        "source": "formula1.gold.v_constructor_predictions_2026",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
     }
   ],
   "pages": [
@@ -1325,6 +1367,333 @@
           "position": {
             "x": 0,
             "y": 7,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "82fd1560",
+      "displayName": "Season 2026 Predictions",
+      "layout": [
+        {
+          "widget": {
+            "name": "header_2026",
+            "multilineTextboxSpec": {
+              "lines": [
+                "# 2026 Season Predictions"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "driver_pred_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "96a1711e",
+                  "fields": [
+                    {
+                      "name": "predicted_pos",
+                      "expression": "`predicted_pos`"
+                    },
+                    {
+                      "name": "driver_name",
+                      "expression": "`driver_name`"
+                    },
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "prediction_score",
+                      "expression": "`prediction_score`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Predicted Driver Championship",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "predicted_pos",
+                    "displayName": "Position"
+                  },
+                  {
+                    "fieldName": "driver_name",
+                    "displayName": "Driver"
+                  },
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team"
+                  },
+                  {
+                    "fieldName": "prediction_score",
+                    "displayName": "Score"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "constructor_pred_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "987a270f",
+                  "fields": [
+                    {
+                      "name": "predicted_pos",
+                      "expression": "`predicted_pos`"
+                    },
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_score",
+                      "expression": "`team_score`"
+                    },
+                    {
+                      "name": "best_driver_score",
+                      "expression": "`best_driver_score`"
+                    },
+                    {
+                      "name": "second_driver_score",
+                      "expression": "`second_driver_score`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Predicted Constructor Championship",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "predicted_pos",
+                    "displayName": "Position"
+                  },
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team"
+                  },
+                  {
+                    "fieldName": "team_score",
+                    "displayName": "Team Score"
+                  },
+                  {
+                    "fieldName": "best_driver_score",
+                    "displayName": "Best Driver Score"
+                  },
+                  {
+                    "fieldName": "second_driver_score",
+                    "displayName": "Second Driver Score"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 1,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "driver_pred_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "96a1711e",
+                  "fields": [
+                    {
+                      "name": "sum(prediction_score)",
+                      "expression": "SUM(`prediction_score`)"
+                    },
+                    {
+                      "name": "driver_name",
+                      "expression": "`driver_name`"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "SUM(`prediction_score`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Prediction Score by Driver"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "sum(prediction_score)",
+                  "displayName": "Prediction Score",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "driver_name",
+                  "displayName": "Driver",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "sum(prediction_score)"
+                      }
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "sum(prediction_score)",
+                  "displayName": "Prediction Score",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "scheme",
+                      "scheme": "viridis"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 12,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "constructor_pred_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "987a270f",
+                  "fields": [
+                    {
+                      "name": "sum(team_score)",
+                      "expression": "SUM(`team_score`)"
+                    },
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Team Prediction Score"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "sum(team_score)",
+                  "displayName": "Team Score",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "team",
+                  "displayName": "Team",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "x-reversed"
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "sum(team_score)",
+                  "displayName": "Team Score",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "scheme",
+                      "scheme": "viridis"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 15,
             "width": 12,
             "height": 6
           }
