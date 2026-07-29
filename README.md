@@ -53,8 +53,6 @@ Bronze (raw)  →  Silver (cleaned)  →  Gold (views & predictions)
 | `gold.v_teammate_h2h_long` | Teammate H2H unpivoted (one row per driver) |
 | `gold.v_2026_wdc_predictions` | 2026 WDC predicted standings |
 | `gold.v_2026_wcc_predictions` | 2026 WCC predicted standings |
-| `gold.pred_2026_drivers` | Raw 2026 driver prediction scores |
-| `gold.pred_2026_constructors` | Raw 2026 constructor prediction scores |
 
 ---
 
